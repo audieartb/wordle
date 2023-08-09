@@ -1,6 +1,6 @@
 <script setup>
 import GameBoard from './components/Game.vue'
-import LvToast from 'lightvue/Toast';
+//import LvToast from 'lightvue/Toast';
 
 </script>
 
@@ -11,6 +11,7 @@ import LvToast from 'lightvue/Toast';
 
   <main>
     <GameBoard />
+    <LvToast position: top/>
   </main>
 </template>
 

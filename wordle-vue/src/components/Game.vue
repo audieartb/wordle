@@ -1,11 +1,11 @@
 <script setup>
-import { onBeforeMount, ref } from 'vue'
+import { onMounted, ref, withDefaults} from 'vue'
 import { getWord } from '../services/getWod'
 import AttemptLine from './AttempLine.vue'
 import LvInput from 'lightvue/input'
-import LvToast from 'lightvue/toast'
 import LvButton from 'lightvue/button'
-
+//import { getCurrentInstance } from 'vue'
+//const instance = getCurrentInstance().appContext.config.globalProperties;
 
 //Variables
 const word = ref('')
@@ -32,9 +32,12 @@ async function setWord() {
     })
     .catch((error) => console.log(error))
 }
-function showTop() {
+function showTop(){
   try {
+    //console.log(app.LvToast)
     
+    //instance.$toast.add({ title: 'Default Message', content: 'Message Content', duration: 3000 });
+    //lightToast.add('message')
   } catch (error) {
     console.log("error on toast",error)
   }finally{
@@ -59,6 +62,8 @@ function submitAttempt() {
 }
 
 setWord()
+
+
 </script>
 
 <template>
@@ -86,7 +91,6 @@ setWord()
       <p>{{ newWordAttempt }}</p>
     </div>
     <LvButton label="Top" class="--mr-4" @click="showTop" />
-    <LvToast v-bind="OUT_OF_ATTEMPTS"/>
   </div>
 </template>
 
