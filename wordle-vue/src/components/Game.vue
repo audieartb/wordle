@@ -1,11 +1,11 @@
 <script setup>
-import { onMounted, ref, withDefaults} from 'vue'
+import { ref, inject} from 'vue'
 import { getWord } from '../services/getWod'
 import AttemptLine from './AttempLine.vue'
 import LvInput from 'lightvue/input'
 import LvButton from 'lightvue/button'
-//import { getCurrentInstance } from 'vue'
-//const instance = getCurrentInstance().appContext.config.globalProperties;
+import {fiveLettersOnly,gameLost,gameWin, finished} from './utils/toastMessages'
+const TOAST = inject('globalProperties')
 
 //Variables
 const word = ref('')
@@ -13,15 +13,7 @@ var attempCount = 0
 var newWordAttempt = ref('')
 var attemptList = []
 const VALID_ATTEMPS = 6
-
-const OUT_OF_ATTEMPTS = {
-    type: 'info',
-    title: 'Warn Message',
-    content: "What do you think you're doing?",
-    position: 'top',
-    duration: 3000
-  }
-
+var gameStatus = 'progress'
 //Functions
 async function setWord() {
   word.value = getWord()
@@ -32,35 +24,54 @@ async function setWord() {
     })
     .catch((error) => console.log(error))
 }
-function showTop(){
-  try {
-    //console.log(app.LvToast)
-    
-    //instance.$toast.add({ title: 'Default Message', content: 'Message Content', duration: 3000 });
-    //lightToast.add('message')
-  } catch (error) {
-    console.log("error on toast",error)
-  }finally{
-    return
-  }
-} 
 
-function submitAttempt() {
+function checkStatus() {
   attempCount++
-  if (attempCount > 6) {
-    showTop()
-    return
-  }else if(newWordAttempt.value.length != 5){
-    showTop()
-    attempCount--;
-    console.log()
+  if(gameStatus == 'win' || gameStatus == 'lost'){
+    emitToast(finished)
     return
   }
-  console.log('attempted word ==> ', newWordAttempt.value)
-  attemptList.push(newWordAttempt.value)
-  newWordAttempt.value = ''
+
+  if(newWordAttempt.value.length != 5){
+   
+    emitToast(fiveLettersOnly)
+    attempCount--;
+    return
+  }
+
+  if(newWordAttempt.value != word.value && attempCount >= 6){
+    emitToast(gameLost)
+    submitAttempt()
+    gameStatus == 'lost'
+    return 
+  }else if(newWordAttempt.value != word.value){
+    submitAttempt()
+    return
+  }
+  else if(true  || attempCount >= 6) {
+    emitToast(gameWin)
+    gameStatus ='win'
+  }
+
+  submitAttempt()
 }
 
+function submitAttempt(){
+  attemptList.push(newWordAttempt.value)
+    newWordAttempt.value = ''
+}
+
+function resetGame(){
+  console.log('resetting game')
+  gameStatus = 'progress';
+  attempCount = 0;
+  attemptList = []
+}
+
+function emitToast(message){
+  TOAST.removeAllGroups()
+  TOAST.add(message)
+}
 setWord()
 
 
@@ -85,12 +96,12 @@ setWord()
         v-model="newWordAttempt"
         :maxlength="5"
         :rounded="true"
-        help-text="try a new word..."
-        @keyup.enter="submitAttempt"
+        :help-text="gameStatus == 'progress' ? 'try a new word...' : 'game over'"
+        @keyup.enter="checkStatus"
       ></lv-input>
       <p>{{ newWordAttempt }}</p>
     </div>
-    <LvButton label="Top" class="--mr-4" @click="showTop" />
+    <!-- <LvButton label="Reset Game" class="--mr-4" @click="resetGame" /> -->
   </div>
 </template>
 
