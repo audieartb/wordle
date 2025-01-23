@@ -50,14 +50,16 @@ function style2(letter, idx){
 
 <style scoped>
 .attempt-row {
+  inherits: false;
   display: flex;
   margin-bottom: 1.15rem;
 }
 
 .attempt-letter {
   margin-right: 1rem;
-  height: 4rem;
-  width: 4rem;
+  height: 3rem;
+  width: 3rem;
+  
 }
 
 .letter-neutral{

@@ -15,12 +15,13 @@ const props = defineProps({
 
 <template>  
 
-
-
 <LvButton
 :label="letter"
-:class="[ boxStyle]"
-
+:class="[ boxStyle, 'letter-text']"
+style="font-size: 2em;"
 />
 
 </template>
+
+<style scoped>
+</style>

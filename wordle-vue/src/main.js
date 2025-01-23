@@ -4,8 +4,5 @@ import { createApp } from 'vue'
 import App from './App.vue'
 
 const app = createApp(App)
-//app.use(LvToast)
-app.component('LvToast',LvToast)
+app.use(LvToast)
 app.mount('#app')
-console.log(app)
-//createApp(App).mount('#app')
