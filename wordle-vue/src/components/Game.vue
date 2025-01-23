@@ -1,23 +1,14 @@
 <script setup>
-<<<<<<< HEAD
 import { onMounted, ref, withDefaults } from 'vue'
-=======
-import { ref, inject} from 'vue'
->>>>>>> origin
 import { getWord } from '../services/getWod'
 import AttemptLine from './AttempLine.vue'
 import LvInput from 'lightvue/input'
 import LvButton from 'lightvue/button'
-<<<<<<< HEAD
 import LvDialog from 'lightvue/dialog'
 import MenuBar from './MenuBar.vue'
 import { getCurrentInstance } from 'vue'
 import { store } from '../store/store'
 const instance = getCurrentInstance().appContext.config.globalProperties
-=======
-import {fiveLettersOnly,gameLost,gameWin, finished} from './utils/toastMessages'
-const TOAST = inject('globalProperties')
->>>>>>> origin
 
 //Variables
 const word = ref('')
@@ -25,7 +16,6 @@ var attempCount = 0
 var newWordAttempt = ref('')
 var attemptList = []
 const VALID_ATTEMPS = 6
-<<<<<<< HEAD
 var isSolved = false
 
 const OUT_OF_ATTEMPTS = {
@@ -51,9 +41,6 @@ const SUCCESS_GAME = {
   duration: 3000
 }
 
-=======
-var gameStatus = 'progress'
->>>>>>> origin
 //Functions
 async function setWord() {
   word.value = getWord()
@@ -63,7 +50,6 @@ async function setWord() {
     })
     .catch((error) => console.log(error))
 }
-<<<<<<< HEAD
 function showTop(message) {
   try {
 
@@ -75,12 +61,9 @@ function showTop(message) {
     return
   }
 }
-=======
->>>>>>> origin
 
 function checkStatus() {
   attempCount++
-<<<<<<< HEAD
   if (isSolved) {
     showTop(SUCCESS_GAME)
     return
@@ -102,35 +85,6 @@ function checkStatus() {
     showTop(SUCCESS_GAME)
   }
   newWordAttempt.value = ''
-=======
-  if(gameStatus == 'win' || gameStatus == 'lost'){
-    emitToast(finished)
-    return
-  }
-
-  if(newWordAttempt.value.length != 5){
-   
-    emitToast(fiveLettersOnly)
-    attempCount--;
-    return
-  }
-
-  if(newWordAttempt.value != word.value && attempCount >= 6){
-    emitToast(gameLost)
-    submitAttempt()
-    gameStatus == 'lost'
-    return 
-  }else if(newWordAttempt.value != word.value){
-    submitAttempt()
-    return
-  }
-  else if(true  || attempCount >= 6) {
-    emitToast(gameWin)
-    gameStatus ='win'
-  }
-
-  submitAttempt()
->>>>>>> origin
 }
 
 function submitAttempt(){
@@ -183,20 +137,11 @@ setWord()
         v-model="newWordAttempt"
         :maxlength="5"
         :rounded="true"
-<<<<<<< HEAD
         :help-text="isSolved ? 'you won!' : 'try a new word..'"
         @keyup.enter="submitAttempt"
-=======
-        :help-text="gameStatus == 'progress' ? 'try a new word...' : 'game over'"
-        @keyup.enter="checkStatus"
->>>>>>> origin
       ></lv-input>
     </div>
-<<<<<<< HEAD
     <LvButton label="Submit" class="--mr-4" @click="submitAttempt" />
-=======
-    <!-- <LvButton label="Reset Game" class="--mr-4" @click="resetGame" /> -->
->>>>>>> origin
   </div>
 </template>
 
