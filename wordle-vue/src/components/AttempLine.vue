@@ -33,6 +33,10 @@ function style2(letter, idx){
   }
 }
 
+function clearLines(){
+  
+}
+
 </script>
 
 <template>
